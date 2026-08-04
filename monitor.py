@@ -17,7 +17,13 @@ def obtener_datos():
     disco_total = medir_disco.total / (1024 ** 3)
 
     sensores = psutil.sensors_temperatures()
-    temp_cpu = sensores["k10temp"][0].current
+    nombres_posibles = ["k10temp", "coretemp"]
+    temp_cpu = "N/D"  # valor por defecto si ninguno existe
+
+    for nombre in nombres_posibles:
+        if nombre in sensores:
+            temp_cpu = sensores[nombre][0].current
+            break
 
     datos = {
         "cpu": medir_cpu,
