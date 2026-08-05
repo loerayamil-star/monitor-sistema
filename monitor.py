@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+
 import psutil
 
 
@@ -21,8 +22,9 @@ def obtener_datos():
     temp_cpu = "N/D"  # valor por defecto si ninguno existe
 
     for nombre in nombres_posibles:
-        if nombre in sensores:
-            temp_cpu = sensores[nombre][0].current
+        lecturas = sensores.get(nombre)
+        if lecturas:
+            temp_cpu = lecturas[0].current
             break
 
     datos = {
@@ -54,21 +56,27 @@ class MonitorApp:
     def crear_widgets(self):
         tk.Label(self.ventana, text="CPU").pack()
         self.var_cpu = tk.IntVar()
-        self.barra_cpu = ttk.Progressbar(self.ventana, variable=self.var_cpu, maximum=100, length=300)
+        self.barra_cpu = ttk.Progressbar(
+            self.ventana, variable=self.var_cpu, maximum=100, length=300
+        )
         self.barra_cpu.pack()
         self.label_cpu = tk.Label(self.ventana, text="0%")
         self.label_cpu.pack()
 
         tk.Label(self.ventana, text="RAM").pack()
         self.var_ram = tk.IntVar()
-        self.barra_ram = ttk.Progressbar(self.ventana, variable=self.var_ram, maximum=100, length=300)
+        self.barra_ram = ttk.Progressbar(
+            self.ventana, variable=self.var_ram, maximum=100, length=300
+        )
         self.barra_ram.pack()
         self.label_ram = tk.Label(self.ventana, text="0%")
         self.label_ram.pack()
 
         tk.Label(self.ventana, text="Disco").pack()
         self.var_disk = tk.IntVar()
-        self.barra_disk = ttk.Progressbar(self.ventana, variable=self.var_disk, maximum=100, length=300)
+        self.barra_disk = ttk.Progressbar(
+            self.ventana, variable=self.var_disk, maximum=100, length=300
+        )
         self.barra_disk.pack()
         self.label_disk = tk.Label(self.ventana, text="0%")
         self.label_disk.pack()
@@ -78,6 +86,8 @@ class MonitorApp:
         self.label_temp.pack()
 
     def elegir_color(self, porcentaje):
+        if not isinstance(porcentaje, (int, float)):
+            return "gray"
         if porcentaje < 60:
             return "green"
         elif porcentaje < 85:
@@ -115,6 +125,7 @@ class MonitorApp:
         self.ventana.after(1000, self.actualizar)
 
 
-root = tk.Tk()
-app = MonitorApp(root)
-root.mainloop()
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = MonitorApp(root)
+    root.mainloop()

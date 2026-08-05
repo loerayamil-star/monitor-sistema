@@ -40,6 +40,16 @@ pip install psutil
 python monitor.py
 ```
 
+## Limitaciones conocidas
+
+- **Sin manejo de errores en las llamadas a psutil**: si `psutil.sensors_temperatures()` u otra función falla (por ejemplo, en Windows/Mac donde algunos sensores no están disponibles, o por permisos), la excepción no se captura y el ciclo de actualización se detiene sin avisar al usuario.
+- **Llamada bloqueante en el hilo de la GUI**: `psutil.cpu_percent(interval=1)` bloquea la ventana durante 1 segundo en cada actualización, por lo que la interfaz no responde durante ese lapso.
+- **Sin manejo del cierre de ventana**: no se captura el evento `WM_DELETE_WINDOW`, por lo que cerrar la ventana justo antes de un ciclo de actualización puede generar un traceback en consola.
+- **Valores hardcodeados**:
+  - La lista de sensores de temperatura (`k10temp`, `coretemp`) no cubre todos los chips posibles (por ejemplo `zenpower`, `acpitz`), por lo que en algunas máquinas la temperatura puede mostrarse siempre como "N/D".
+  - La ruta de disco monitoreada (`/`) no es válida en Windows.
+- **`elegir_color` reutilizada para dos escalas distintas**: la misma función y los mismos umbrales (60/85) se usan tanto para porcentajes de uso (0-100%) como para temperatura en °C, lo cual es una coincidencia funcional y no un diseño explícito.
+
 ## Nota
 
 Proyecto educativo desarrollado como primer acercamiento al uso de clases y Programación Orientada a Objetos en Python.
