@@ -6,6 +6,8 @@ Monitor de recursos del sistema desarrollado en Python con interfaz gráfica. Mu
 
 Aplicación de escritorio que permite visualizar en tiempo real el estado de los recursos del sistema. Cada métrica se actualiza automáticamente cada segundo y cambia de color según el nivel de uso para facilitar la lectura rápida del estado del equipo.
 
+![Monitor de Sistema](assets/monitor-sistema.png)
+
 ## Funcionalidades
 
 - **CPU**: porcentaje de uso en tiempo real
